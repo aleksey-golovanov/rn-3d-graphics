@@ -12,6 +12,7 @@
     MTKMesh *_mesh;
     id<MTLCommandQueue> _commandQueue;
     id<MTLRenderPipelineState> _pipelineState;
+    id<MTLTexture> _earthMap;
 }
 
 - (instancetype)init:(MTKView *)view {
@@ -56,6 +57,21 @@
         } else {
             NSLog(@"Error loading shader source: %@", shaderSourceError);
         }
+        
+        // load texture
+        NSString *texturePath = [podBundle pathForResource:@"earthmap" ofType:@"jpg"];
+        NSError* textureFileError = nil;
+        NSData* data = [NSData dataWithContentsOfFile:texturePath options:0 error:&textureFileError];
+        
+        NSError *textureLoadError = nil;
+        
+        MTKTextureLoader *textureLoader = [[MTKTextureLoader alloc] initWithDevice:view.device];
+        
+        NSDictionary* textureLoaderOptions = @{
+            MTKTextureLoaderOptionSRGB : @NO
+        };
+        
+        _earthMap = [textureLoader newTextureWithData:data options:textureLoaderOptions error:&textureLoadError];
     }
     
     return self;
@@ -68,10 +84,9 @@
     
     [commandEncoder setRenderPipelineState:_pipelineState];
     [commandEncoder setVertexBuffer:_mesh.vertexBuffers[0].buffer offset:0 atIndex:0];
+    [commandEncoder setFragmentTexture:_earthMap atIndex:0];
     
     const auto submesh = _mesh.submeshes.firstObject;
-    
-    [commandEncoder setTriangleFillMode:MTLTriangleFillModeLines];
     
     [commandEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle indexCount:submesh.indexCount indexType:submesh.indexType indexBuffer:submesh.indexBuffer.buffer indexBufferOffset:0];
     

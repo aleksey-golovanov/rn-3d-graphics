@@ -39,7 +39,7 @@ using namespace facebook::react;
         _renderer = [[Renderer alloc] init:_view];
         
         _view.delegate = _renderer;
-        _view.clearColor = MTLClearColorMake(1.0, 1.0, 0.8, 1.0);
+        _view.clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0);
         
         self.contentView = _view;
     }

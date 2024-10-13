@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => ".git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,cpp}"
-  s.resources = "ios/**/*.{metal}"
+  s.resources = ["ios/**/*.{metal}", "ios/**/*.jpg"]
 
   s.frameworks = "MetalKit", "ModelIO"
 
