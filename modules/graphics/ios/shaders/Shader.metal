@@ -13,10 +13,18 @@ struct VertexOut {
     float2 uv;
 };
 
-vertex VertexOut vertex_main(const VertexIn vertex_in [[stage_in]])
+struct Uniforms {
+    float4x4 rotationX;
+    float4x4 rotationY;
+};
+
+vertex VertexOut vertex_main(const VertexIn vertex_in [[stage_in]], constant Uniforms &uniforms [[buffer(1)]])
 {
+    float4 position = uniforms.rotationX * uniforms.rotationY * float4(vertex_in.position);
+    
     VertexOut out;
-    out.position = vertex_in.position;
+    
+    out.position = position;
     out.normal = vertex_in.normal;
     out.uv = vertex_in.uv;
 
