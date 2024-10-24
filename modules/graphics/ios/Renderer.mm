@@ -59,11 +59,8 @@ typedef struct {
 {
     CGPoint translation = [gesture translationInView:gesture.view];
     
-    CGFloat distanceX = translation.x;
-    CGFloat distanceY = translation.y;
-    
-    _rotationXAngle += translation.y * 0.02;
-    _rotationYAngle += translation.x * 0.02;
+    _rotationXAngle += translation.y * 0.01;
+    _rotationYAngle += translation.x * 0.01;
     [self updateUniforms];
     
     [gesture setTranslation:CGPointZero inView:gesture.view];
